@@ -44,7 +44,7 @@ Note; this code was for (eBook Chapter-15), so i will publish pdf file for Part1
     syntax  2: ETWNetMonv3Log.exe HTML "your query"
     example 2: ETWNetMonv3Log.exe html "rport >=80 OR events LIKE '*Established*' AND events LIKE '*connect complete*'"
     example 2: ETWNetMonv3Log.exe html "events LIKE '*requested to connect*'"
-    example 2: ETWNetMonv3Log.exe html "state LIKE '*synsent*'"
+    example 2: ETWNetMonv3Log.exe html "state NOT LIKE '*synsent*'"
     example 2: ETWNetMonv3Log.exe html "events LIKE '*'"
     example 2: ETWNetMonv3Log.exe html "rhost LIKE '192.168*' or lhost LIKE '192.168.1*'"
     example 2: ETWNetMonv3Log.exe html "rport <=80 OR lport >=50000"
