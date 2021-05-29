@@ -37,7 +37,7 @@ Note; this code was for (eBook Chapter-15), so i will publish pdf file for Part1
  
  usage: 
     
-    step1: [win] ETWNetMonv3Log.exe  [XML xmlfile.xml] [HTML "YOUTR QUERY"]
+    step1: [win] ETWNetMonv3Log.exe  [XML xmlfile.xml] [HTML "YOUR QUERY"]
     example: ETWNetMonv3Log.exe HTML "state LIKE '*synsent*'"
     syntax  1: switch XML, All ETW records from text [EtwNetMonv3logs.txt] will save to xml file (convert all records to xml)
     example 1: ETWNetMonv3Log.exe XML filename.xml
