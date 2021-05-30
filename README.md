@@ -7,7 +7,7 @@
 
 "ETWNetMon3Log.exe" is Command base tool for make XML/HTML report via "Queries" from ETW Logs (which made by ETWNetMonv3Agent.exe tool).
 
-Note: this code was for (eBook Chapter-15), so i will publish pdf file for Part1 of ch15, and C# code for "ETWNetMonv3.exe" will publish with pdf (soon), but  "ETWNetMonv3Agent.cs" & "ETWNetMon3Log.cs" Codes are ready and you can use them and both PE files should be in the "same folder" because of log file "EtwNetMonv3logs.txt". (both codes need to work with this log file, this log file made by Agent & with ETWNetMon3Log.exe you can make HTML report from this file by simple Queries... (for make report with xml/html format recommended tool is this Command base tool) 
+Note: this code was for (eBook Chapter-15), so i will publish pdf file for Part1 of ch15, and C# code for "ETWNetMonv3.exe" will publish with pdf (soon), but  "ETWNetMonv3Agent.cs" & "ETWNetMon3Log.cs" Codes are ready and you can use them and both PE files should be in the "same folder" because of log file "EtwNetMonv3logs.txt". (both codes need to work with this log file, this log file made by Agent & with ETWNetMon3Log.exe you can make HTML report from this file by simple Queries... "for make report with xml/html format, recommended tool for [blue teams & defenders] is this Command base tool". 
 
 
  1. ETWNetMonv3.exe Windows App (i will publish Code for this tool + pdf Chapter15 soon) 
