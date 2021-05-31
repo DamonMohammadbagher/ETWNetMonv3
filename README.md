@@ -9,7 +9,7 @@
 
 Note: this code was for (eBook Bypassing AVs by C# Programming, Chapter-15), so i will publish pdf file for Part1 of ch15, and C# code for "ETWNetMonv3.exe" will publish with pdf (soon), but  "ETWNetMonv3Agent.cs" & "ETWNetMon3Log.cs" Codes are ready and you can use them and both PE files should be in the "same folder" because of log file "EtwNetMonv3logs.txt". (both codes need to work with this log file, this log file made by Agent & with ETWNetMon3Log.exe you can make HTML report from this file by simple Queries... , "for make report with XML/HTML format this ETWNetMon3Log.cs is useful tool for [blue teams & defenders], [i hope]".
 
-Note: i will publish new codes + pdf file about this code which is for chapter-15 (ebook: Bypassing Avs by C# Programming) & Some bugs in the code will fix (soon). 
+Note: i will publish new codes + pdf file about this code which is for chapter-15 (ebook: Bypassing Avs by C# Programming) & Some bugs in the codes will fix (soon). 
 
  1. ETWNetMonv3.exe Windows App (i will publish Code for this tool + pdf Chapter15 soon) 
  
