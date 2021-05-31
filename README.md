@@ -24,8 +24,8 @@ Note: i will publish new codes + pdf file about this code which is for chapter-1
  usage: 
     
     step1: [win] ETWNetMonv3Agent.exe [SCAN]/[DBG]
-    EXAMPLE: [win] ETWNetMonv3Agent.exe
-    EXAMPLE: [win (Run As Admin)] ETWNetMonv3Agent.exe SCAN
+    example: [win] ETWNetMonv3Agent.exe
+    example: [win (Run As Admin)] ETWNetMonv3Agent.exe SCAN
     Note: you need Run As Admin only for switch SCAN , ETWNetMonv3Agent.exe code with/without [SCAN/DBG] will make log file "EtwNetMonv3logs.txt"
 
    ![](https://github.com/DamonMohammadbagher/ETWNetMonv3/blob/main/Pic/ETWNetMonv3_02.png)
