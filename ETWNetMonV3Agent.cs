@@ -318,9 +318,9 @@ namespace ETWNetMonV3Agent
         public static bool IPS_IDS = false;
         public static bool Is_IPS_Mode = true;
         public static bool Is_DebugMode = true;
-        public static async Task logfilewrite(string filename , string text)
+        public static async Task logfilewrite(string filename, string text)
         {
-            using (StreamWriter _file = new StreamWriter(filename,true))
+            using (StreamWriter _file = new StreamWriter(filename, true))
             {
                 await _file.WriteLineAsync(text);
             };
@@ -336,6 +336,7 @@ namespace ETWNetMonV3Agent
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine("ETWNetMonv3Agent tool is simple ETW Network Monitor tool for TCP Connections (only)");
             Console.WriteLine();
+
             string Netmon = "ETWMonNet1_Ops";
             string Target_PID = "";
             List<MEMORY_BASIC_INFORMATION> MemReg = new List<MEMORY_BASIC_INFORMATION>();
@@ -347,6 +348,7 @@ namespace ETWNetMonV3Agent
             string logfile = "EtwNetMonv3logs.txt";
             using (var ETWs = new TraceEventSession(Netmon, null))
             {
+
                 ETWs.StopOnDispose = true;
                 int i = 0;
                 Task t_asyn2;
@@ -356,13 +358,15 @@ namespace ETWNetMonV3Agent
                     RegisteredTraceEventParser EvtNetMon1 = new RegisteredTraceEventParser(source);
                     EvtNetMon1.All += delegate (TraceEvent data)
                     {
+
+
                         PRCOCESSFileName2 = "";
                         PRCOCESSFileName = "";
                         GC.GetTotalMemory(true);
                         // Task t_asyn = logfilewrite(logfile, "test");
                         Kill_TID = false;
                         string ETWMsg = data.FormattedMessage;
-                        
+
                         Target_PID = "";
                         if (ETWMsg.Contains("(local=") || ETWMsg.Contains("PID"))
                         {
@@ -374,9 +378,9 @@ namespace ETWNetMonV3Agent
                             catch (Exception)
                             {
 
-                                
+
                             }
-                         
+
 
                             if (ETWMsg.Contains("exists. State ="))
                             {
@@ -392,7 +396,7 @@ namespace ETWNetMonV3Agent
 
                                 }
                                 t_asyn2 = logfilewrite(logfile, "[" + DateTime.Now.ToString() + "]::" + ETWMsg.Split('(')[1].ToString() + "[PID:" + Target_PID + "]");
-                                Console.ForegroundColor = ConsoleColor.DarkGreen; Console.WriteLine("[" + DateTime.Now.ToString() + "]::" + ETWMsg.Split('(')[1].ToString() + "[PID:" + Target_PID + "]"+ " " + "ProcessPath: " + PRCOCESSFileName2);
+                                Console.ForegroundColor = ConsoleColor.DarkGreen; Console.WriteLine("[" + DateTime.Now.ToString() + "]::" + ETWMsg.Split('(')[1].ToString() + "[PID:" + Target_PID + "]" + " " + "ProcessPath: " + PRCOCESSFileName2);
 
                                 Target_PID = "";
                             }
@@ -447,7 +451,7 @@ namespace ETWNetMonV3Agent
                                     i = 0;
                                 }
                             }
-                            
+
                             /// this section of code, used for Memory SCAN....
                             /// 
                             if (ETWMsg.Contains("connect completed. PID ="))
@@ -468,246 +472,254 @@ namespace ETWNetMonV3Agent
                                         {
                                         }
                                         t_asyn2 = logfilewrite(logfile, "[>] [" + DateTime.Now.ToString() + "]::" + ETWMsg.Split('(')[1].ToString() + "[PID:" + Target_PID.ToString() + "]" + " " + "ProcessPath: " + PRCOCESSFileName);
-                                        
+
                                         /// dont use this switch if you want only woRk with ETW Log files , this switch "SCAN" is only for Meterpreter Payload Detection (Tested & worked on KALI 2018 with MSF4 ver 4.x & client WIN7X64SP1)
                                         /// note: this Meterpreter Signature was not work on new version of Metasploit MSF6 (ver 6).
                                         /// SCAN => switch to scan memory for each process which has network connection (ESTABLISHED state) to find Meterpreter Signature (by default off)
                                         if (args.Length >= 1 && args[0].ToUpper() == "SCAN")
                                         {
-                                            if (!Process.GetProcessById(Convert.ToInt32(Target_PID)).HasExited)
+                                           
+                                            Task.Factory.StartNew(() =>
                                             {
-                                                Process Prcs = Process.GetProcessById(Convert.ToInt32(Target_PID));
-                                                try
+                                               
+
+                                                if (!Process.GetProcessById(Convert.ToInt32(Target_PID)).HasExited)
                                                 {
-                                                    if (Prcs.HasExited)
-                                                    {
-                                                        buff = null;
-                                                    }
+                                                    Process Prcs = Process.GetProcessById(Convert.ToInt32(Target_PID));
                                                     try
                                                     {
+                                                        if (Prcs.HasExited)
+                                                        {
+                                                            buff = null;
+                                                        }
                                                         try
                                                         {
-                                                            Console.Title = "Scanning Memory: ";
-                                                            IntPtr Addy = new IntPtr();
-                                                            while (true)
+                                                            try
                                                             {
+                                                                Console.Title = "Scanning Memory: ";
+                                                                IntPtr Addy = new IntPtr();
+                                                                MemReg.Clear();
+                                                                while (true)
+                                                                {
+
+                                                                    if (!Prcs.HasExited)
+                                                                    {
+                                                                        MEMORY_BASIC_INFORMATION MemInfo = new MEMORY_BASIC_INFORMATION();
+                                                                        int MemDump = VirtualQueryEx(Prcs.Handle, Addy, out MemInfo, Marshal.SizeOf(MemInfo));
+                                                                        if (MemDump == 0) break;
+                                                                        if (0 != (MemInfo.State & MEM_COMMIT) && 0 != (MemInfo.Protect & WRITABLE) && 0 == (MemInfo.Protect & PAGE_GUARD))
+                                                                        {
+                                                                            MemReg.Add(MemInfo);
+                                                                        }
+                                                                        Addy = new IntPtr(MemInfo.BaseAddress.ToInt64() + MemInfo.RegionSize.ToInt64());
+                                                                    }
+                                                                    if (Prcs.HasExited)
+                                                                    {
+                                                                        GC.Collect(GC.MaxGeneration);
+                                                                        GC.WaitForPendingFinalizers();
+                                                                        SetProcessWorkingSetSize(Process.GetCurrentProcess().Handle, (UIntPtr)0xFFFFFFFF, (UIntPtr)0xFFFFFFFF);
+                                                                        break;
+
+                                                                    }
+                                                                }
+                                                            }
+                                                            catch (Exception e)
+                                                            {
+
+                                                            }
+                                                            for (int _i = 0; _i < MemReg.Count; _i++)
+                                                            {
+                                                                if (Kill_TID) break;
+                                                                if (Prcs.HasExited) { break; }
+                                                                Console.Title = "Scanning Memory: " + Prcs.ProcessName.ToString() + " (" + Prcs.Id.ToString() + ") :: Memory.Count[" + (MemReg.Count - _i).ToString() + "]";
                                                                 if (!Prcs.HasExited)
                                                                 {
-                                                                    MEMORY_BASIC_INFORMATION MemInfo = new MEMORY_BASIC_INFORMATION();
-                                                                    int MemDump = VirtualQueryEx(Prcs.Handle, Addy, out MemInfo, Marshal.SizeOf(MemInfo));
-                                                                    if (MemDump == 0) break;
-                                                                    if (0 != (MemInfo.State & MEM_COMMIT) && 0 != (MemInfo.Protect & WRITABLE) && 0 == (MemInfo.Protect & PAGE_GUARD))
-                                                                    {
-                                                                        MemReg.Add(MemInfo);
-                                                                    }
-                                                                    Addy = new IntPtr(MemInfo.BaseAddress.ToInt64() + MemInfo.RegionSize.ToInt64());
-                                                                }
-                                                                if (Prcs.HasExited)
-                                                                {
+                                                                    buff = new byte[MemReg[_i].RegionSize.ToInt64()];
+                                                                    ReadProcessMemory(Prcs.Handle, MemReg[_i].BaseAddress, buff, MemReg[_i].RegionSize.ToInt32(), IntPtr.Zero);
                                                                     GC.Collect(GC.MaxGeneration);
                                                                     GC.WaitForPendingFinalizers();
                                                                     SetProcessWorkingSetSize(Process.GetCurrentProcess().Handle, (UIntPtr)0xFFFFFFFF, (UIntPtr)0xFFFFFFFF);
-                                                                    break;
 
-                                                                }
-                                                            }
-                                                        }
-                                                        catch (Exception e)
-                                                        {
-
-                                                        }
-                                                        for (int _i = 0; _i < MemReg.Count; _i++)
-                                                        {
-                                                            if (Kill_TID) break;
-                                                            if (Prcs.HasExited) { break; }
-                                                            Console.Title = "Scanning Memory: " + Prcs.ProcessName.ToString() + " (" + Prcs.Id.ToString() + ") :: Memory.Count[" + (MemReg.Count - _i).ToString() + "]";
-                                                            if (!Prcs.HasExited)
-                                                            {
-                                                                buff = new byte[MemReg[_i].RegionSize.ToInt64()];
-                                                                ReadProcessMemory(Prcs.Handle, MemReg[_i].BaseAddress, buff, MemReg[_i].RegionSize.ToInt32(), IntPtr.Zero);
-                                                                GC.Collect(GC.MaxGeneration);
-                                                                GC.WaitForPendingFinalizers();
-                                                                SetProcessWorkingSetSize(Process.GetCurrentProcess().Handle, (UIntPtr)0xFFFFFFFF, (UIntPtr)0xFFFFFFFF);
-
-                                                                for (int j = 0; j < buff.Length; j++)
-                                                                {
-                                                                    buff[j] = (byte)(buff[j] ^ 0xFF);
-                                                                }
-                                                                long Result = IndexOf(buff, _Meterpreter__Bytes_signature);
-                                                                /// result > 0 when FOUND Infected Process  ;)
-                                                                if (Result > 0)
-                                                                {
-                                                                    Console.ForegroundColor = ConsoleColor.Red;
-                                                                    for (int f = 0; f < Prcs.Threads.Count; f++)
+                                                                    for (int j = 0; j < buff.Length; j++)
+                                                                    {
+                                                                        buff[j] = (byte)(buff[j] ^ 0xFF);
+                                                                    }
+                                                                    long Result = IndexOf(buff, _Meterpreter__Bytes_signature);
+                                                                    /// result > 0 when FOUND Infected Process  ;)
+                                                                    if (Result > 0)
                                                                     {
                                                                         Console.ForegroundColor = ConsoleColor.Red;
-                                                                        var Sub_Threads = Prcs.Threads[f].StartAddress.ToInt64();
-                                                                        /// do this code if only ONCE in loop f == 0
-                                                                        if (f <= 0)
+                                                                        for (int f = 0; f < Prcs.Threads.Count; f++)
                                                                         {
-                                                                            try
+                                                                            Console.ForegroundColor = ConsoleColor.Red;
+                                                                            var Sub_Threads = Prcs.Threads[f].StartAddress.ToInt64();
+                                                                            /// do this code if only ONCE in loop f == 0
+                                                                            if (f <= 0)
                                                                             {
-                                                                                Console.ForegroundColor = ConsoleColor.Red;
-                                                                                t_asyn2 = logfilewrite(logfile, "[X] [" + DateTime.Now.ToString() + "]::" + "[Meterpreter Process Found in-Memory]" + "[PID:" + Prcs.Id.ToString() + "] [PName:" + Prcs.ProcessName + "]");
-
-                                                                                string _source = BitConverter.ToString(buff);
-                                                                                string pattern = BitConverter.ToString(_Meterpreter__Bytes_signature);
-                                                                                int _index = _source.IndexOf(pattern);
-                                                                                Console.WriteLine("\t Network Connection for Meterpreter Process Found in-Memory");
-                                                                                Console.WriteLine("\t Network Connection via PID:{0}", Prcs.Id.ToString());
-
-                                                                                Console.WriteLine("\t Infected Memory bytes :");
-                                                                                int chunkSize_debug = 60;
-                                                                                string temp_debug = BitConverter.ToString(buff);
-                                                                                int stringLength_debug = temp_debug.Length;
-                                                                                int counter_debug = 0;
-                                                                                for (int d = _index; d < stringLength_debug; d += chunkSize_debug)
+                                                                                try
                                                                                 {
                                                                                     Console.ForegroundColor = ConsoleColor.Red;
-                                                                                    if (d + chunkSize_debug > stringLength_debug) chunkSize_debug = stringLength_debug - d;
-                                                                                    Console.WriteLine("\t {0}", temp_debug.Substring(d, chunkSize_debug));
-                                                                                    if (counter_debug >= 4) break;
-                                                                                    counter_debug++;
-                                                                                }
+                                                                                    t_asyn2 = logfilewrite(logfile, "[X] [" + DateTime.Now.ToString() + "]::" + "[Meterpreter Process Found in-Memory]" + "[PID:" + Prcs.Id.ToString() + "] [PName:" + Prcs.ProcessName + "]");
 
-                                                                                Console.ForegroundColor = ConsoleColor.Red;
-                                                                                Console.WriteLine(" ");
-                                                                                Console.WriteLine("\t Process Arguments :");
-                                                                                string temp = _Get_Arguments(Prcs);
-                                                                                /// fixing Arguments show method done ;)
-                                                                                /// show 300 char arguments only
-                                                                                //string temp = "Notfound!";
-                                                                                int chunkSize = 59;
-                                                                                int stringLength = temp.Length;
-                                                                                for (int b = 0; b < stringLength; b += chunkSize)
-                                                                                {
-                                                                                    Console.ForegroundColor = ConsoleColor.Red;
-                                                                                    if (b + chunkSize > stringLength) chunkSize = stringLength - b;
-                                                                                    Console.WriteLine("\t {0}", temp.Substring(b, chunkSize));
-                                                                                    if (b >= 300) break;
-                                                                                }
-                                                                            }
-                                                                            catch (Exception _eee)
-                                                                            {
-                                                                                result_Async = Call.BeginInvoke(ConsoleColor.Green, System.DateTime.Now.ToString() + " [X]: " + _eee.Message, null, 2, null, null);
-                                                                            }
+                                                                                    string _source = BitConverter.ToString(buff);
+                                                                                    string pattern = BitConverter.ToString(_Meterpreter__Bytes_signature);
+                                                                                    int _index = _source.IndexOf(pattern);
+                                                                                    Console.WriteLine("\t Network Connection for Meterpreter Process Found in-Memory");
+                                                                                    Console.WriteLine("\t Network Connection via PID:{0}", Prcs.Id.ToString());
 
-                                                                            /// do something for view sub threads 
-                                                                            for (int counter_threads = 0; counter_threads < Prcs.Threads.Count; counter_threads++)
-                                                                            {
-                                                                                /// if Thread_startadrees was 0 maybe that thread is METERPRETER backdoor thread ;-/
-                                                                                /// so i will show Thread_startadress 0 by Yellow color but this is not 100% correct always ;)
-                                                                                if (Prcs.Threads[counter_threads].ThreadState == System.Diagnostics.ThreadState.Wait)
-                                                                                {
-                                                                                    //  Console.WriteLine("bingo8, {0}", Target_PID);
-                                                                                    if (Prcs.Threads[counter_threads].StartAddress.ToString() == "0" || Prcs.Threads[counter_threads].WaitReason.ToString().Contains("Exe"))
+                                                                                    Console.WriteLine("\t Infected Memory bytes :");
+                                                                                    int chunkSize_debug = 60;
+                                                                                    string temp_debug = BitConverter.ToString(buff);
+                                                                                    int stringLength_debug = temp_debug.Length;
+                                                                                    int counter_debug = 0;
+                                                                                    for (int d = _index; d < stringLength_debug; d += chunkSize_debug)
                                                                                     {
-                                                                                        Console.ForegroundColor = ConsoleColor.DarkYellow;
+                                                                                        Console.ForegroundColor = ConsoleColor.Red;
+                                                                                        if (d + chunkSize_debug > stringLength_debug) chunkSize_debug = stringLength_debug - d;
+                                                                                        Console.WriteLine("\t {0}", temp_debug.Substring(d, chunkSize_debug));
+                                                                                        if (counter_debug >= 4) break;
+                                                                                        counter_debug++;
+                                                                                    }
 
-                                                                                        try
+                                                                                    Console.ForegroundColor = ConsoleColor.Red;
+                                                                                    Console.WriteLine(" ");
+                                                                                    Console.WriteLine("\t Process Arguments :");
+                                                                                    string temp = _Get_Arguments(Prcs);
+                                                                                    /// fixing Arguments show method done ;)
+                                                                                    /// show 300 char arguments only
+                                                                                    //string temp = "Notfound!";
+                                                                                    int chunkSize = 59;
+                                                                                    int stringLength = temp.Length;
+                                                                                    for (int b = 0; b < stringLength; b += chunkSize)
+                                                                                    {
+                                                                                        Console.ForegroundColor = ConsoleColor.Red;
+                                                                                        if (b + chunkSize > stringLength) chunkSize = stringLength - b;
+                                                                                        Console.WriteLine("\t {0}", temp.Substring(b, chunkSize));
+                                                                                        if (b >= 300) break;
+                                                                                    }
+                                                                                }
+                                                                                catch (Exception _eee)
+                                                                                {
+                                                                                    result_Async = Call.BeginInvoke(ConsoleColor.Green, System.DateTime.Now.ToString() + " [X]: " + _eee.Message, null, 2, null, null);
+                                                                                }
+
+                                                                                /// do something for view sub threads 
+                                                                                for (int counter_threads = 0; counter_threads < Prcs.Threads.Count; counter_threads++)
+                                                                                {
+                                                                                    /// if Thread_startadrees was 0 maybe that thread is METERPRETER backdoor thread ;-/
+                                                                                    /// so i will show Thread_startadress 0 by Yellow color but this is not 100% correct always ;)
+                                                                                    if (Prcs.Threads[counter_threads].ThreadState == System.Diagnostics.ThreadState.Wait)
+                                                                                    {
+                                                                                        //  Console.WriteLine("bingo8, {0}", Target_PID);
+                                                                                        if (Prcs.Threads[counter_threads].StartAddress.ToString() == "0" || Prcs.Threads[counter_threads].WaitReason.ToString().Contains("Exe"))
                                                                                         {
-                                                                                            Kill_TID = Kill_Thread(Prcs.Id, Prcs.Threads[counter_threads].Id);
-                                                                                            if (Kill_TID)
-                                                                                            {
-                                                                                                Console.ForegroundColor = ConsoleColor.Yellow;
-                                                                                                t_asyn2 = logfilewrite(logfile, "[X] [" + DateTime.Now.ToString() + "]::" + "[Thread Killed => TID:" + Prcs.Threads[counter_threads].Id + " with StartAddress:" + _Return_Threads_StartAddress(Prcs.Threads[counter_threads].Id) + "] [PID:" + Prcs.Id.ToString() + "] [PName:" + Prcs.ProcessName + "]");
+                                                                                            Console.ForegroundColor = ConsoleColor.DarkYellow;
 
-                                                                                                Console.WriteLine("\t Process Thread ID: {0} with StartAddress: {1} Killed", Prcs.Threads[counter_threads].Id, _Return_Threads_StartAddress(Prcs.Threads[counter_threads].Id));
-                                                                                                break;
-                                                                                            }
-                                                                                            else
+                                                                                            try
                                                                                             {
-                                                                                                Console.ForegroundColor = ConsoleColor.Red;
-                                                                                                Console.WriteLine("\t Process Thread ID: {0} with StartAddress: {1} not Killed", Prcs.Threads[counter_threads].Id, _Return_Threads_StartAddress(Prcs.Threads[counter_threads].Id));
+                                                                                                Kill_TID = Kill_Thread(Prcs.Id, Prcs.Threads[counter_threads].Id);
+                                                                                                if (Kill_TID)
+                                                                                                {
+                                                                                                    Console.ForegroundColor = ConsoleColor.Yellow;
+                                                                                                    t_asyn2 = logfilewrite(logfile, "[X] [" + DateTime.Now.ToString() + "]::" + "[Thread Killed => TID:" + Prcs.Threads[counter_threads].Id + " with StartAddress:" + _Return_Threads_StartAddress(Prcs.Threads[counter_threads].Id) + "] [PID:" + Prcs.Id.ToString() + "] [PName:" + Prcs.ProcessName + "]");
+
+                                                                                                    Console.WriteLine("\t Process Thread ID: {0} with StartAddress: {1} Killed", Prcs.Threads[counter_threads].Id, _Return_Threads_StartAddress(Prcs.Threads[counter_threads].Id));
+                                                                                                    break;
+                                                                                                }
+                                                                                                else
+                                                                                                {
+                                                                                                    Console.ForegroundColor = ConsoleColor.Red;
+                                                                                                    Console.WriteLine("\t Process Thread ID: {0} with StartAddress: {1} not Killed", Prcs.Threads[counter_threads].Id, _Return_Threads_StartAddress(Prcs.Threads[counter_threads].Id));
+                                                                                                }
+                                                                                            }
+                                                                                            catch (Exception error)
+                                                                                            {
+                                                                                                Console.ForegroundColor = ConsoleColor.Green;
+                                                                                                Console.WriteLine(System.DateTime.Now.ToString() + "   Maybe Thread can't kill: " + error.Message);
                                                                                             }
                                                                                         }
-                                                                                        catch (Exception error)
+                                                                                        else
                                                                                         {
-                                                                                            Console.ForegroundColor = ConsoleColor.Green;
-                                                                                            Console.WriteLine(System.DateTime.Now.ToString() + "   Maybe Thread can't kill: " + error.Message);
+                                                                                            /// debug
+                                                                                            // Console.ForegroundColor = ConsoleColor.DarkRed;
+                                                                                            // Console.WriteLine("----------Tid StartAddress: {0}", _Return_Threads_StartAddress(Prcs.Threads[counter_threads].Id));
                                                                                         }
                                                                                     }
                                                                                     else
                                                                                     {
-                                                                                        /// debug
-                                                                                        // Console.ForegroundColor = ConsoleColor.DarkRed;
-                                                                                        // Console.WriteLine("----------Tid StartAddress: {0}", _Return_Threads_StartAddress(Prcs.Threads[counter_threads].Id));
-                                                                                    }
-                                                                                }
-                                                                                else
-                                                                                {
-                                                                                    if (Prcs.Threads[counter_threads].StartAddress.ToString() == "0" || Prcs.Threads[counter_threads].ThreadState.ToString().Contains("Run"))
-                                                                                    {
-                                                                                        //  Console.WriteLine("bingo9, {0}", Target_PID);
-
-                                                                                        Console.ForegroundColor = ConsoleColor.DarkYellow;
-
-                                                                                        try
+                                                                                        if (Prcs.Threads[counter_threads].StartAddress.ToString() == "0" || Prcs.Threads[counter_threads].ThreadState.ToString().Contains("Run"))
                                                                                         {
-                                                                                            /// warning this code is Dangerous maybe you killing wrong process with StartAdress "0"                                             
-                                                                                            Kill_TID = Kill_Thread(Prcs.Id, Prcs.Threads[counter_threads].Id);
-                                                                                            if (Kill_TID)
+                                                                                            //  Console.WriteLine("bingo9, {0}", Target_PID);
+
+                                                                                            Console.ForegroundColor = ConsoleColor.DarkYellow;
+
+                                                                                            try
                                                                                             {
-                                                                                                Console.ForegroundColor = ConsoleColor.Yellow;
-                                                                                                Console.WriteLine("\t Process Thread ID: {0} with StartAddress: {1} Killed", Prcs.Threads[counter_threads].Id, _Return_Threads_StartAddress(Prcs.Threads[counter_threads].Id));
-                                                                                                break;
+                                                                                                /// warning this code is Dangerous maybe you killing wrong process with StartAdress "0"                                             
+                                                                                                Kill_TID = Kill_Thread(Prcs.Id, Prcs.Threads[counter_threads].Id);
+                                                                                                if (Kill_TID)
+                                                                                                {
+                                                                                                    Console.ForegroundColor = ConsoleColor.Yellow;
+                                                                                                    Console.WriteLine("\t Process Thread ID: {0} with StartAddress: {1} Killed", Prcs.Threads[counter_threads].Id, _Return_Threads_StartAddress(Prcs.Threads[counter_threads].Id));
+                                                                                                    break;
+                                                                                                }
+                                                                                                else
+                                                                                                {
+                                                                                                    Console.ForegroundColor = ConsoleColor.Red;
+                                                                                                    Console.WriteLine("\t Process Thread ID: {0} with StartAddress: {1} not Killed", Prcs.Threads[counter_threads].Id, _Return_Threads_StartAddress(Prcs.Threads[counter_threads].Id));
+                                                                                                }
                                                                                             }
-                                                                                            else
+                                                                                            catch (Exception error)
                                                                                             {
-                                                                                                Console.ForegroundColor = ConsoleColor.Red;
-                                                                                                Console.WriteLine("\t Process Thread ID: {0} with StartAddress: {1} not Killed", Prcs.Threads[counter_threads].Id, _Return_Threads_StartAddress(Prcs.Threads[counter_threads].Id));
+                                                                                                Console.ForegroundColor = ConsoleColor.Green;
+                                                                                                Console.WriteLine(System.DateTime.Now.ToString() + "   Maybe Thread not killed: " + error.Message);
+
                                                                                             }
-                                                                                        }
-                                                                                        catch (Exception error)
-                                                                                        {
-                                                                                            Console.ForegroundColor = ConsoleColor.Green;
-                                                                                            Console.WriteLine(System.DateTime.Now.ToString() + "   Maybe Thread not killed: " + error.Message);
 
                                                                                         }
+                                                                                        else
+                                                                                        {
+                                                                                            /// debug
+                                                                                            //  Console.ForegroundColor = ConsoleColor.DarkRed;
+                                                                                            //  Console.WriteLine("----------Tid StartAddress: {0}", _Return_Threads_StartAddress(Prcs.Threads[counter_threads].Id));
+                                                                                        }
+                                                                                        /// if startadrees was 0 maybe that thread is METERPRETER backdoor thread ;-/
+                                                                                        /// so i will show startadress 0 by Yellow color but this is not 100% correct always ;)
+                                                                                    }
 
-                                                                                    }
-                                                                                    else
-                                                                                    {
-                                                                                        /// debug
-                                                                                        //  Console.ForegroundColor = ConsoleColor.DarkRed;
-                                                                                        //  Console.WriteLine("----------Tid StartAddress: {0}", _Return_Threads_StartAddress(Prcs.Threads[counter_threads].Id));
-                                                                                    }
-                                                                                    /// if startadrees was 0 maybe that thread is METERPRETER backdoor thread ;-/
-                                                                                    /// so i will show startadress 0 by Yellow color but this is not 100% correct always ;)
                                                                                 }
-
                                                                             }
+
                                                                         }
 
+                                                                        buff = null;
                                                                     }
 
+
                                                                     buff = null;
+                                                                    GC.Collect(GC.MaxGeneration);
+                                                                    GC.WaitForPendingFinalizers();
+                                                                    SetProcessWorkingSetSize(Process.GetCurrentProcess().Handle, (UIntPtr)0xFFFFFFFF, (UIntPtr)0xFFFFFFFF);
                                                                 }
-
-
-                                                                buff = null;
-                                                                GC.Collect(GC.MaxGeneration);
-                                                                GC.WaitForPendingFinalizers();
-                                                                SetProcessWorkingSetSize(Process.GetCurrentProcess().Handle, (UIntPtr)0xFFFFFFFF, (UIntPtr)0xFFFFFFFF);
+                                                                if (Prcs.HasExited) { break; }
+                                                                if (Kill_TID) break;
                                                             }
-                                                            if (Prcs.HasExited) { break; }
-                                                            if (Kill_TID) break;
+
+                                                        }
+                                                        catch (Exception ee)
+                                                        {
+                                                            //Console.WriteLine(ee.Message);
                                                         }
 
                                                     }
-                                                    catch (Exception ee)
+                                                    catch (Exception)
                                                     {
-                                                        //Console.WriteLine(ee.Message);
+                                                        //  return false;
                                                     }
-
-                                                }
-                                                catch (Exception)
-                                                {
+                                                    buff = null;
                                                     //  return false;
                                                 }
-                                                buff = null;
-                                                //  return false;
-                                            }
+                                            });
                                         }
                                     }
                                     catch (Exception)
@@ -719,26 +731,33 @@ namespace ETWNetMonV3Agent
 
                             }
                             System.Threading.Thread.Sleep(5);
-                            if (ETWMsg.Contains(" requested to connect")) {
-                               
-                                t_asyn2 = logfilewrite(logfile, "[" + DateTime.Now.ToString() + "]::" + ETWMsg.Split('(')[1].ToString() + "[PID:" + data.ProcessID.ToString() + "]" + " ProcessPath: " + PRCOCESSFileName);                                
-                                Console.ForegroundColor = ConsoleColor.Green; Console.WriteLine("[" + DateTime.Now.ToString() + "]::" + ETWMsg.Split('(')[1].ToString()+ "by PID:" + data.ProcessID.ToString() + " ProcessPath: " + PRCOCESSFileName);                                
+                            if (ETWMsg.Contains(" requested to connect"))
+                            {
+
+                                t_asyn2 = logfilewrite(logfile, "[" + DateTime.Now.ToString() + "]::" + ETWMsg.Split('(')[1].ToString() + "[PID:" + data.ProcessID.ToString() + "]" + " ProcessPath: " + PRCOCESSFileName);
+                                Console.ForegroundColor = ConsoleColor.Green; Console.WriteLine("[" + DateTime.Now.ToString() + "]::" + ETWMsg.Split('(')[1].ToString() + "by PID:" + data.ProcessID.ToString() + " ProcessPath: " + PRCOCESSFileName);
                             }
                             System.Threading.Thread.Sleep(5);
-                            if (ETWMsg.Contains("connect proceeding")) {
-                                 t_asyn2 = logfilewrite(logfile, "[" + DateTime.Now.ToString() + "]::" + ETWMsg.Split('(')[1].ToString() + "[PID:" + data.ProcessID.ToString() + "]" );
+                            if (ETWMsg.Contains("connect proceeding"))
+                            {
+                                t_asyn2 = logfilewrite(logfile, "[" + DateTime.Now.ToString() + "]::" + ETWMsg.Split('(')[1].ToString() + "[PID:" + data.ProcessID.ToString() + "]");
 
-                                Console.ForegroundColor = ConsoleColor.DarkGreen; Console.WriteLine("[" + DateTime.Now.ToString() + "]::" + ETWMsg.Split('(')[1].ToString()); }
+                                Console.ForegroundColor = ConsoleColor.DarkGreen; Console.WriteLine("[" + DateTime.Now.ToString() + "]::" + ETWMsg.Split('(')[1].ToString());
+                            }
                             System.Threading.Thread.Sleep(5);
-                            if (ETWMsg.Contains(" close issued") || ETWMsg.Contains(" close")) {
-                                 t_asyn2 = logfilewrite(logfile, "[" + DateTime.Now.ToString() + "]::" + ETWMsg.Split('(')[1].ToString() + "[PID:" + data.ProcessID.ToString() + "]");
+                            if (ETWMsg.Contains(" close issued") || ETWMsg.Contains(" close"))
+                            {
+                                t_asyn2 = logfilewrite(logfile, "[" + DateTime.Now.ToString() + "]::" + ETWMsg.Split('(')[1].ToString() + "[PID:" + data.ProcessID.ToString() + "]");
 
-                                Console.ForegroundColor = ConsoleColor.DarkGreen; Console.WriteLine("[" + DateTime.Now.ToString() + "]::" + ETWMsg.Split('(')[1].ToString()); }
+                                Console.ForegroundColor = ConsoleColor.DarkGreen; Console.WriteLine("[" + DateTime.Now.ToString() + "]::" + ETWMsg.Split('(')[1].ToString());
+                            }
                             System.Threading.Thread.Sleep(5);
-                            if (ETWMsg.Contains("shutdown initiated")) {
-                                 t_asyn2 = logfilewrite(logfile, "[" + DateTime.Now.ToString() + "]::" + ETWMsg.Split('(')[1].ToString() + "[PID:" + data.ProcessID.ToString() + "]");
+                            if (ETWMsg.Contains("shutdown initiated"))
+                            {
+                                t_asyn2 = logfilewrite(logfile, "[" + DateTime.Now.ToString() + "]::" + ETWMsg.Split('(')[1].ToString() + "[PID:" + data.ProcessID.ToString() + "]");
 
-                                Console.ForegroundColor = ConsoleColor.DarkYellow; Console.WriteLine("[" + DateTime.Now.ToString() + "]::" + ETWMsg.Split('(')[1].ToString()); }
+                                Console.ForegroundColor = ConsoleColor.DarkYellow; Console.WriteLine("[" + DateTime.Now.ToString() + "]::" + ETWMsg.Split('(')[1].ToString());
+                            }
 
                         }
                     };
@@ -748,9 +767,11 @@ namespace ETWNetMonV3Agent
                     Console.CancelKeyPress += (object s, ConsoleCancelEventArgs e) => ETWs.Stop();
                     ETWs.Dispose();
                 };
+
             }
+
         }
 
-
     }
+
 }
