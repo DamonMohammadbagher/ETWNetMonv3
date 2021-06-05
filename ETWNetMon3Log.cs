@@ -155,7 +155,7 @@ class Program
         Console.WriteLine("example 2: ETWNetMonv3Log.exe html \"your query\" ");
         Console.WriteLine("example 2: ETWNetMonv3Log.exe html \"rport >=80 OR events LIKE '*Established*' AND events LIKE '*connect complete*'\"");
         Console.WriteLine("example 2: ETWNetMonv3Log.exe html \"events LIKE '*requested to connect*'\"");
-        Console.WriteLine("example 2: ETWNetMonv3Log.exe html \"state LIKE '*synsent*'\"");
+        Console.WriteLine("example 2: ETWNetMonv3Log.exe html \"state NOT LIKE '*synsent*'\"");
         Console.WriteLine("example 2: ETWNetMonv3Log.exe html \"events LIKE '*'\"");
         Console.WriteLine("example 2: ETWNetMonv3Log.exe html \"rhost LIKE '192.168*' or lhost LIKE '192.168.1*'\"");
         Console.WriteLine("example 2: ETWNetMonv3Log.exe html \"rport <=80 OR lport >=50000\"");
@@ -174,7 +174,7 @@ class Program
                 byte[] b;
                 string s;
                 Thread.CurrentThread.Priority = ThreadPriority.Highest;
-                using (FileStream myfile = new FileStream(Logfile, FileMode.Open))
+                using (FileStream myfile = new FileStream(Logfile, FileMode.Open,FileAccess.Read,FileShare.ReadWrite))
                 {
                     b = new byte[myfile.Length];
                     myfile.Read(b, 0, b.Length);
