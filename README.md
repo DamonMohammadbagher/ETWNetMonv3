@@ -11,9 +11,15 @@ Note: this code was for (eBook Bypassing AVs by C# Programming, Chapter-15), so 
 
 Note: i will publish new codes + pdf file about this code which is for chapter-15 (ebook: Bypassing Avs by C# Programming) & Some bugs in the codes will fix (soon). (some bugs are here in code ETWNetMonv3Agent.cs , especially for Scanning Memory, which i need to change code from single thread to Multithreading Code, i knew that but now i am working on other codes & pdf file for chapter ch15-part1, but i will fix these problems too). 
 
-Video [1], [Video-1 of Chapter15-Part1] : https://www.youtube.com/watch?v=zDG4Tze9mts
+Video [1], [Video-1 of Chapter15-Part1]: 
 
-Video [2], [Video-2 of Chapter15-Part1&2] : https://www.youtube.com/watch?v=1Aeor_NqpUA
+    ETW + C# and Monitoring Network Connections via ETW (CH15-Part1): 
+    link => https://www.youtube.com/watch?v=zDG4Tze9mts
+
+Video [2], [Video-2 of Chapter15-Part1&2]:
+
+    ETW + C# & Monitoring Process/Memory/Threads + Network Connection via ETW (CH15-Part2):
+    link => https://www.youtube.com/watch?v=1Aeor_NqpUA
 
  1. ETWNetMonv3.exe Windows App (i will publish Code for this tool + pdf Chapter15 soon) 
  
