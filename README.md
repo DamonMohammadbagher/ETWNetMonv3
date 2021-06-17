@@ -14,12 +14,21 @@ Note: i will publish new codes + pdf file about this code which is for chapter-1
 Video [1], [Video-1 of Chapter15-Part1]: 
 
     ETW + C# and Monitoring Network Connections via ETW (CH15-Part1): 
-    link => https://www.youtube.com/watch?v=zDG4Tze9mts
+    link1 => https://www.youtube.com/watch?v=zDG4Tze9mts
+    link2 => https://share.vidyard.com/watch/5ybRwUbt2b3d3M3ggQiuYQ
 
 Video [2], [Video-2 of Chapter15-Part1&2]:
 
     ETW + C# & Monitoring Process/Memory/Threads + Network Connection via ETW (CH15-Part2):
-    link => https://www.youtube.com/watch?v=1Aeor_NqpUA
+    link1 => https://www.youtube.com/watch?v=1Aeor_NqpUA
+    link2 => https://share.vidyard.com/watch/6bYvcF75FqQ3BomZELpQUj
+
+Video [3], [Video-3 of Chapter15-Part2]:
+
+    Chapter 15 : C# + ETW vs Some Thread/Process/Code Injection Techniques (CH15-Part2):
+    link1 => https://www.youtube.com/watch?v=d1a8WqOvE84
+    link2 => https://share.vidyard.com/watch/4kB2Xy1bLfhRxaTD6pwaLD
+
 
  1. ETWNetMonv3.exe Windows App (i will publish Code for this tool + pdf Chapter15 soon) 
  
