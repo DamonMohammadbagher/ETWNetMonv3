@@ -95,6 +95,22 @@ Demo Video2: https://share.vidyard.com/watch/4kB2Xy1bLfhRxaTD6pwaLD
     example: ETWProcessMon.exe 
     
    ![](https://github.com/DamonMohammadbagher/ETWNetMonv3/blob/main/Pic/1.png)
+--- 
+### ETWProcessMon.exe & Imageload + TCPIP Events
+
+   ![](https://github.com/DamonMohammadbagher/ETWNetMonv3/blob/main/Pic/2.png) 
+
+---
+### ETWProcessMon.exe & Remote Thread Injection Detection by Log File (ETW Events)
+
+   ![](https://github.com/DamonMohammadbagher/ETWNetMonv3/blob/main/Pic/etwinj.png)
+
+---
+### ETWProcessMon.exe & Payload Detection by Log File (ETW Events)
+
+   ![](https://github.com/DamonMohammadbagher/ETWNetMonv3/blob/main/Pic/detection.png)
+ -----------------------------------------------------------    
+
     
     
     
