@@ -83,7 +83,7 @@ Video [3], [Video-3 of Chapter15-Part2]: (video is about C# + ETW vs Process Hol
  -----------------------------------------------------------    
   4. ETWProcessMon.cs (ETWProcessMon v1.1 tool is for RemoteThreadInjection Detetion)
   
-  Note: "this code tested for Detection against some new/old methods like C# code for Process Hollowing, DInvoke (syscall), Loading dll/functions from Memory [32BIT], Classic-RemoteThreadInjection, APCQ Method, Process-Ghosting,Process Hollowing & Process Doppelganging by [Minjector], ..."
+  Note: "this code tested for Detection against some new/old methods like C# code for Process Hollowing, DInvoke (syscall), Loading dll/functions from Memory [32BIT], Classic-RemoteThreadInjection, APC Queue Code Injection, Process-Ghosting, Process Hollowing & Process Doppelganging by [Minjector], ..."
   
 Demo Video1: https://www.linkedin.com/posts/damonmohammadbagher_this-video-is-my-research-result-about-using-activity-6809542015475355648-fsfX/ 
 
