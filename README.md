@@ -71,10 +71,30 @@ Video [3], [Video-3 of Chapter15-Part2]: (video is about C# + ETW vs Process Hol
     example 2: ETWNetMonv3Log.exe html "pname LIKE '*.exe*'"
     example 2: ETWNetMonv3Log.exe html "events LIKE '*C:\\*'"
     example 2: ETWNetMonv3Log.exe html "PID = 1452"
+    syntax 2-1: ETWNetMonv3Log.exe html2 [MODE 0=SYNSENT , 1=ESTABLISHED] [Query]");
+    example 2-1: ETWNetMonv3Log.exe html2  1  "PID = 1452");
+    example 2-1: ETWNetMonv3Log.exe html2  0  "PID = 1452");
+    example 2-1: ETWNetMonv3Log.exe html2  1  "rpot >= 80");
+    example 2-1: ETWNetMonv3Log.exe html2  1  "events LIKE '*192.168*'");
+    Note: for (syntax 2-1) EtwNetMonv3logs.txt & ETWProcessMonlog.txt should be in current folder
     
-   ![](https://github.com/DamonMohammadbagher/ETWNetMonv3/blob/main/Pic/ETWNetMonv3_01.png)
+   ![](https://github.com/DamonMohammadbagher/ETWNetMonv3/blob/main/Pic/4-1.png)
 
  -----------------------------------------------------------    
+  4. ETWProcessMon.cs (ETWProcessMon v1.1 tool is for RemoteThreadInjection Detetion)
+  
+  Note: "this code tested for Detection against some new/old methods like C# code for Process Hollowing, DInvoke (syscall), Loading dll/functions from Memory [32BIT], Classic-RemoteThreadInjection, APCQ Method, Process-Ghosting,Process Hollowing & Process Doppelganging by [Minjector], ..."
+  
+Demo Video1: https://www.linkedin.com/posts/damonmohammadbagher_this-video-is-my-research-result-about-using-activity-6809542015475355648-fsfX/ 
+
+Demo Video2: https://share.vidyard.com/watch/4kB2Xy1bLfhRxaTD6pwaLD 
+ 
+ usage: 
+    
+    step1: [win] ETWProcessMon.exe
+    example: ETWProcessMon.exe 
+    
+   ![](https://github.com/DamonMohammadbagher/ETWNetMonv3/blob/main/Pic/1.png)
     
     
     
