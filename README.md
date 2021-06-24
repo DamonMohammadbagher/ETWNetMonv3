@@ -91,6 +91,8 @@ Note: in this case you should use switch (html2) like picture in this time you w
   4. ETWProcessMon.cs (ETWProcessMon v1.1 tool is for RemoteThreadInjection Detection)
   
   Note: "this code tested for Detection against some new/old methods like C# code for Process Hollowing, DInvoke (syscall), Loading dll/functions from Memory [32BIT], Classic-RemoteThreadInjection, APC Queue Code Injection, Process-Ghosting, Process Hollowing & Process Doppelganging by [Minjector], ..."
+
+in these videos you can watch Result of tests:
   
 Demo Video1: https://www.linkedin.com/posts/damonmohammadbagher_this-video-is-my-research-result-about-using-activity-6809542015475355648-fsfX/ 
 
