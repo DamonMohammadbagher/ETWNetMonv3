@@ -76,13 +76,13 @@ Video [3], [Video-3 of Chapter15-Part2]: (video is about C# + ETW vs Process Hol
     example 2-1: ETWNetMonv3Log.exe html2  0  "PID = 1452");
     example 2-1: ETWNetMonv3Log.exe html2  1  "rpot >= 80");
     example 2-1: ETWNetMonv3Log.exe html2  1  "events LIKE '*192.168*'");
-    Note: for (syntax 2-1) EtwNetMonv3logs.txt & ETWProcessMonlog.txt should be in current folder
+    Note: for "syntax 2-1" or switch "html2" EtwNetMonv3logs.txt & ETWProcessMonlog.txt should be in current folder, this switch "html2" is for integration between log files  [EtwNetMonv3logs.txt & ETWProcessMonlog.txt], switch "html" was only for EtwNetMonv3logs TCPIP Network reports.
     
    ![](https://github.com/DamonMohammadbagher/ETWNetMonv3/blob/main/Pic/4.png)
 
 ETWNetMon3Log.exe + integration with ETWProcessMon.exe log file (EtwNetMonv3logs.txt + ETWProcessMonlog.txt)
 
-Note: in this case you should use switch (html2) like picture in this time you will have some details from ETWProcessMon log file in your report which is Thread-injection & VirtualMemAlloc for each Process in your TCPIP/NETWORK CONNECTION ReporS (integration between tcpip events & Process/Mem/Threads Events).
+Note: in this case you should use switch (html2) like picture in this time you will have some details from ETWProcessMon log file in your report which is Thread-injection & VirtualMemAlloc for each Process in your TCPIP/Network Connections report (integration between tcpip events & Process/Mem/Threads Events). as you can see sometimes very simple you can find Meterpreter payload via this information/events. (useful for Blue teams & defenders)
 
    ![](https://github.com/DamonMohammadbagher/ETWNetMonv3/blob/main/Pic/4-1.png)
 
