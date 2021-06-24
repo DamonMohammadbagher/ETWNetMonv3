@@ -38,7 +38,9 @@ Video [3], [Video-3 of Chapter15-Part2]: (video is about C# + ETW vs Process Hol
 
  -----------------------------------------------------------    
   
-  2. ETWNetMonv3Agent.cs (ETW Agent)
+  2. ETWNetMonv3Agent.cs (ETW Agent) 
+  
+  Note: switch SCAN has bugs [not recommanded] ¯\_(ツ)_/¯ 
  
  usage: 
     
