@@ -80,6 +80,15 @@ Video [3], [Video-3 of Chapter15-Part2]: (video is about C# + ETW vs Process Hol
     example 2-1: ETWNetMonv3Log.exe html2  1  "events LIKE '*192.168*'");
         
 Note: for "syntax 2-1" or switch "html2" these two files => 1.EtwNetMonv3logs.txt & 2.ETWProcessMonlog.txt should be in current folder, this switch "html2" is for integration between log files  [EtwNetMonv3logs.txt & ETWProcessMonlog.txt], switch "html" was only for EtwNetMonv3logs TCPIP Network reports.
+
+### Note: for "syntax 2-1" report you need these steps:
+ 1. run => ETWNetMonv3Agent.exe without switch (run as admin is better) ;D (step1)
+ 2. run => ETWProcessMon.exe without switch (run as admin) (step2)
+ 3. run => your own payload injector (meterpreter payload injector for example)
+ 4. wait to etw events sometimes more than 1-2 min needs ;) (depends on systems)
+ 5. after 2-3 mins , copy log file "ETWProcessMonlog.txt for ETWProcessMon.exe to folder which ETWNetMonv3Agent.exe & EtwNetMonv3logs.log exist.
+ 6. run ETWNetMonv3Log.exe with switch "html2" + [query] (ETWNetMonv3Log.exe should be in folder step5)
+ 7. you will have html report (i hope) ;D [watch videos before run codes, video => https://share.vidyard.com/watch/4kB2Xy1bLfhRxaTD6pwaLD ]  
     
    ![](https://github.com/DamonMohammadbagher/ETWNetMonv3/blob/main/Pic/4.png)
 
