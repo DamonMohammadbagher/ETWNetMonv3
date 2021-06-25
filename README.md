@@ -94,7 +94,7 @@ Note: for "syntax 2-1" or switch "html2" these two files => 1.EtwNetMonv3logs.tx
 
 ETWNetMon3Log.exe + integration with ETWProcessMon.exe log file (EtwNetMonv3logs.txt + ETWProcessMonlog.txt)
 
-Note: in this case you should use switch (html2) like picture in this time you will have some details from ETWProcessMon log file in your report which is Thread-injection & VirtualMemAlloc for each Process in your TCPIP/Network Connections report (integration between tcpip events & Process/Mem/Threads Events). as you can see sometimes very simple you can find Meterpreter payload via this information/events. (useful for Blue teams & defenders)
+Note: in this case you should use switch (html2) like picture in this time you will have some details from ETWProcessMon log file in your report which is Thread-injection & VirtualMemAlloc for each Process in your TCPIP/Network Connections report (integration between tcpip events & Process/Mem/Threads Events). as you can see sometimes very simple you can find Meterpreter payload via this information/events. (useful for Blue teams & Defenders)
 
    ![](https://github.com/DamonMohammadbagher/ETWNetMonv3/blob/main/Pic/4-1.png)
 
