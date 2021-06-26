@@ -168,7 +168,7 @@ class Program
         Console.WriteLine("syntax 2-1: ETWNetMonv3Log.exe html2 [MODE 0=SYNSENT , 1=ESTABLISHED] [Query]");
         Console.WriteLine("example 2-1: ETWNetMonv3Log.exe html2  1  \"PID = 1452\"");
         Console.WriteLine("example 2-1: ETWNetMonv3Log.exe html2  0  \"PID = 1452\"");
-        Console.WriteLine("example 2-1: ETWNetMonv3Log.exe html2  1  \"rpot >= 80\"");
+        Console.WriteLine("example 2-1: ETWNetMonv3Log.exe html2  1  \"rport >= 80\"");
         Console.WriteLine("example 2-1: ETWNetMonv3Log.exe html2  1  \"events LIKE '*192.168*'\"");
         Console.WriteLine("Note: for (syntax 2-1) EtwNetMonv3logs.txt & ETWProcessMonlog.txt should be in current folder");
         Console.WriteLine();
@@ -212,7 +212,7 @@ class Program
                     Console.WriteLine("syntax 2-1: ETWNetMonv3Log.exe html2 [MODE 0=SYNSENT , 1=ESTABLISHED] [Query]");
                     Console.WriteLine("example 2-1: ETWNetMonv3Log.exe html2  1  \"PID = 1452\"");
                     Console.WriteLine("example 2-1: ETWNetMonv3Log.exe html2  0  \"PID = 1452\"");
-                    Console.WriteLine("example 2-1: ETWNetMonv3Log.exe html2  1  \"rpot >= 80\"");
+                    Console.WriteLine("example 2-1: ETWNetMonv3Log.exe html2  1  \"rport >= 80\"");
                     Console.WriteLine("example 2-1: ETWNetMonv3Log.exe html2  1  \"events LIKE '*192.168*'\"");
                     Console.WriteLine("Note: for (syntax 2-1) EtwNetMonv3logs.txt & ETWProcessMonlog.txt should be in current folder");
                     Console.WriteLine();
