@@ -76,7 +76,7 @@ Video [3], [Video-3 of Chapter15-Part2]: (video is about C# + ETW vs Process Hol
     syntax 2-1: ETWNetMonv3Log.exe html2 [MODE 0=SYNSENT , 1=ESTABLISHED] [Query]");
     example 2-1: ETWNetMonv3Log.exe html2  1  "PID = 1452");
     example 2-1: ETWNetMonv3Log.exe html2  0  "PID = 1452");
-    example 2-1: ETWNetMonv3Log.exe html2  1  "rpot >= 80");
+    example 2-1: ETWNetMonv3Log.exe html2  1  "rport >= 80");
     example 2-1: ETWNetMonv3Log.exe html2  1  "events LIKE '*192.168*'");
         
 Note: for "syntax 2-1" or switch "html2" these two files => 1.EtwNetMonv3logs.txt & 2.ETWProcessMonlog.txt should be in current folder, this switch "html2" is for integration between log files  [EtwNetMonv3logs.txt & ETWProcessMonlog.txt], switch "html" was only for EtwNetMonv3logs TCPIP Network reports.
