@@ -467,6 +467,7 @@ namespace ETWProcessMon
                 Console.WriteLine("\t {2} - MemoryVirtualAlloc Detectted ==> PID:{0} PName:{1} ", item.PID, item.ProcessName, item.PTime);
                 if (temptimer >= 5)
                 {
+                    temptimer = 0;
                     break;
                 }
                 temptimer++;
@@ -508,7 +509,7 @@ namespace ETWProcessMon
                             detectedPIDs.Add(Convert.ToInt32(item2.PID));
 
                         }
-                        if (tempsearch_4_all >= 550) break;
+                        if (tempsearch_4_all >= 550) { tempsearch_4_all = 0;  break; }
                     }
                 }
 
