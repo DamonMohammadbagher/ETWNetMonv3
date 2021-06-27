@@ -463,10 +463,10 @@ namespace ETWProcessMon
         public static void _WriteResult_Inj_Info(List<_ProcessInfo> search)
         {          
             foreach (_ProcessInfo item in search)
-            {                
+            {    
+                Console.WriteLine("\t {2} - MemoryVirtualAlloc Detectted ==> PID:{0} PName:{1} ", item.PID, item.ProcessName, item.PTime);
                 if (temptimer >= 5)
                 {
-                    Console.WriteLine("\t {2} - MemoryVirtualAlloc Detectted ==> PID:{0} PName:{1} ", item.PID, item.ProcessName, item.PTime);
                     break;
                 }
                 temptimer++;
@@ -511,7 +511,6 @@ namespace ETWProcessMon
                         if (tempsearch_4_all >= 550) break;
                     }
                 }
-
 
             }
 
