@@ -114,7 +114,7 @@ Demo Video2: https://share.vidyard.com/watch/4kB2Xy1bLfhRxaTD6pwaLD
     step1: [win] ETWProcessMon.exe
     example 1: ETWProcessMon.exe
     example 2: ETWProcessMon.exe > Save_all_outputs.txt
-    Note: in "example 2" you can have all outputs in text file [Imageload/TCPIP/NewProcess/NewThreads events + Injection Detection + Details etc] also at same time VirMemAlloc events + Injections Detection events saved into log file ETWProcessMonlog.txt too.
+    Note: in "example 2" you can have all outputs in text file [Imageload/TCPIP/NewProcess/NewThreads events + Injection Detection + Details etc] also at the same time VirMemAlloc events + Injections Detection events saved into log file ETWProcessMonlog.txt too.
     
    ![](https://github.com/DamonMohammadbagher/ETWNetMonv3/blob/main/Pic/1.png)
 --- 
