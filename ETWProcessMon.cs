@@ -447,7 +447,7 @@ namespace ETWProcessMon
 
                     /// show details about Injection
                     _WriteResult_Inj_Info(_Search_MemInfoPlusDateTime(obj.ProcessID.ToString()));
-                    _Search_all_4_VirtualMemAlloc(_Search_MemInfoPlusDateTime(obj.ProcessID.ToString()));
+                    // _Search_all_4_VirtualMemAlloc(_Search_MemInfoPlusDateTime(obj.ProcessID.ToString()));
                     /// show details about Injection
                 }
             }
@@ -509,7 +509,7 @@ namespace ETWProcessMon
                             detectedPIDs.Add(Convert.ToInt32(item2.PID));
 
                         }
-                        if (tempsearch_4_all >= 550) { tempsearch_4_all = 0;  break; }
+                        if (tempsearch_4_all >= 5) { tempsearch_4_all = 0;  break; }
                     }
                 }
 
