@@ -1,16 +1,20 @@
 # ETWNetMonv3 & ETWProcessMon 
 ## "ETWNetMonv3/ETWNetMonv3Agent" is simple C# code for Monitoring TCP Network Connection via ETW & "ETWProcessMon" is for Monitoring Process/Thread/Memory/Imageload etc. 
 -----------------
+### ETWNetMonv3.exe
 "ETWNetMonv3.exe" is Windows App for read/watching ETW Logs (which made by ETWNetMonv3Agent.exe).
 
+### ETWNetMonv3Agent.exe
 "ETWNetMonv3Agent.exe" is ETW Agent C# code and with this simple code you can have realtime TCPv4/v6 Connection Logs also with this tool you can Detect Meterpreter Payload via Signature (with switch SCAN , Detection for Remote Thread Injection) But this Signature worked very well only on Msfv4 (tested on Kali 2018, msf v4.17), Metasploit v6 (msf6) signature is changed so this old signature will not work on Msf6 ;)   
 
+### ETWNetMon3Log.exe
 "ETWNetMon3Log.exe" is Command base tool for make XML/HTML report via "Queries" from ETW Logs (which made by ETWNetMonv3Agent.exe tool).
 
 Note: this code was for (eBook Bypassing AVs by C# Programming, Chapter-15), so i will publish pdf file for Part1 of ch15, and C# code for "ETWNetMonv3.exe" will publish with pdf (soon), but  "ETWNetMonv3Agent.cs" & "ETWNetMon3Log.cs" Codes are ready and you can use them and both PE files should be in the "same folder" because of log file "EtwNetMonv3logs.txt". (both codes need to work with this log file, this log file made by Agent & with ETWNetMon3Log.exe you can make HTML report from this file by simple Queries... , "for make report with XML/HTML format this ETWNetMon3Log.cs is useful tool for [blue teams & defenders], [i hope]".
 
 Note: i will publish new codes + pdf file about this code which is for chapter-15 (ebook: Bypassing Avs by C# Programming) & Some bugs in the codes will fix (soon). (some bugs are here in code ETWNetMonv3Agent.cs , especially for Scanning Memory, which i need to change code from single thread to Multithreading Code, i knew that but now i am working on other codes & pdf file for chapter ch15-part1, but i will fix these problems too). 
 
+### ETWProcessMon.exe
 "ETWProcessMon" is simple tool for Monitoring Processes/Threads/Memory/Imageloads/TCPIP Events via ETW, with this code you can Monitor New Processes also you can See New Threads (Thread Started event) + Technique Detection for Remote-Thread-Injection (Which Means Your New Thread Created into Target Process by Another Process), also with this code you can Monitor VirtualMemAllocation Events in Memory for All Processes (which sometimes is very useful for Payload Detection in-memory) also you can see ImageLoads for each Process & you can see TCPIP Send Events for each Process too. 
 
 Note: VirtualMemAlloc for (Payload-Detection) + ImageLoad & Remote Thread-Injection for (Technique-Detection) are useful for Blue Teams/Defenders.
