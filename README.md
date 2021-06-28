@@ -1,5 +1,5 @@
-# ETWNetMonv3
-## ETWNetMonv3 is simple C# code for Monitoring TCP Network Connection via ETW 
+# ETWNetMonv3 & ETWProcessMon 
+## "ETWNetMonv3/ETWNetMonv3Agent" is simple C# code for Monitoring TCP Network Connection via ETW & "ETWProcessMon" is for Monitoring Process/Thread/Memory/Imageload etc. 
 -----------------
 "ETWNetMonv3.exe" is Windows App for read/watching ETW Logs (which made by ETWNetMonv3Agent.exe).
 
