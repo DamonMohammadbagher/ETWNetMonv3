@@ -9,11 +9,11 @@ using System.IO;
 
 namespace ETWProcessMon
 {
-    public  class _ProcessInfo
+    public struct _ProcessInfo
     {
         public DateTime PTime { get; set; }
         public String ProcessName { get; set; }
-        public String PID { get; set; } 
+        public String PID { get; set; }
         public String PIDPath { get; set; }
         public String MemAPIName { get; set; }
         public String TCPIPCon { get; set; }
@@ -92,7 +92,7 @@ namespace ETWProcessMon
                 /// Only VirtualAlloc events + Thread Injections will save in log file 
                 /// Imageload,TCPIP Network Connection and New Processes Events are not in log file.
                 /// For better performance you can remove codes for these events (imageload,tcpip)... ;) 
-                
+
                 //| KernelTraceEventParser.Keywords.Memory
 
 
@@ -119,7 +119,7 @@ namespace ETWProcessMon
                 ////_arg = args[0];               
                 ////_arg1 = args[1];
                 ////_arg2 = args[2];
-                
+
                 /// DEBUG & TEST ONLY
                 /// arg 1 and 2 was for monitoring via filters for 2 proceesses only... but in this code i want to monitor all processes via ETW
                 _arg = "MonAll";
@@ -131,7 +131,7 @@ namespace ETWProcessMon
                 GC.GetTotalMemory(true);
             }
         }
-        
+
         static void Main(string[] args)
         {
             Console.WriteLine();
@@ -145,37 +145,37 @@ namespace ETWProcessMon
                 Priority = System.Threading.ThreadPriority.AboveNormal
             };
             Bingo.Start();
-          
+
         }
-      
+
         private static void Kernel_ImageLoad(Microsoft.Diagnostics.Tracing.Parsers.Kernel.ImageLoadTraceData obj)
         {
             GC.GetTotalMemory(true);
 
-            
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.DarkGray;
-                Console.Write("[etw] ");
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.Write("[+DLL+] ImageLoad ");
-                Console.ForegroundColor = ConsoleColor.DarkGray;
-                Console.WriteLine("Detected, Target_Process: " + obj.ProcessName + ":" + obj.ProcessID + "   TID(" + obj.ThreadID + ")" + " TaskName(" + obj.TaskName + ") " + obj.TimeStamp.ToString());
 
-                Console.ForegroundColor = ConsoleColor.Green;
-                _v1 = 0;
-                foreach (var item in obj.PayloadNames)
-                {
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.Write("[etw] ");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("[+DLL+] ImageLoad ");
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.WriteLine("Detected, Target_Process: " + obj.ProcessName + ":" + obj.ProcessID + "   TID(" + obj.ThreadID + ")" + " TaskName(" + obj.TaskName + ") " + obj.TimeStamp.ToString());
 
-                    if (item.Contains("File"))
-                        Console.WriteLine("[etw] [" + item + ": " + obj.PayloadValue(_v1).ToString() + "]");
+            Console.ForegroundColor = ConsoleColor.Green;
+            _v1 = 0;
+            foreach (var item in obj.PayloadNames)
+            {
 
-                    if (_v1 == 0)
-                        Console.WriteLine("[etw] [" + item + ": " + obj.PayloadValue(_v1).ToString() + "]");
+                if (item.Contains("File"))
+                    Console.WriteLine("[etw] [" + item + ": " + obj.PayloadValue(_v1).ToString() + "]");
 
-                    _v1++;
-                }
-                Console.WriteLine();
-            
+                if (_v1 == 0)
+                    Console.WriteLine("[etw] [" + item + ": " + obj.PayloadValue(_v1).ToString() + "]");
+
+                _v1++;
+            }
+            Console.WriteLine();
+
             Process_Events_db.Add(new _ProcessInfo { PPID = -1, MemAPIName = "ImageLoad", PID = obj.ProcessID.ToString(), PIDPath = getpathPID(obj.ProcessID), ProcessName = obj.ProcessName, PTime = obj.TimeStamp, TCPIPCon = "-", MemAllocInfo = "-" });
 
         }
@@ -217,7 +217,7 @@ namespace ETWProcessMon
 
             }
 
-            Process_Events_db.Add(new _ProcessInfo { PPID=-1, MemAPIName = "STcp", PID = obj.ProcessID.ToString(), PIDPath = getpathPID(obj.ProcessID), ProcessName = obj.ProcessName, PTime = obj.TimeStamp, TCPIPCon = TemptcptipInfo, MemAllocInfo="-" });
+            Process_Events_db.Add(new _ProcessInfo { PPID = -1, MemAPIName = "STcp", PID = obj.ProcessID.ToString(), PIDPath = getpathPID(obj.ProcessID), ProcessName = obj.ProcessName, PTime = obj.TimeStamp, TCPIPCon = TemptcptipInfo, MemAllocInfo = "-" });
 
         }
         private static void Kernel_ProcessStart(Microsoft.Diagnostics.Tracing.Parsers.Kernel.ProcessTraceData obj)
@@ -229,12 +229,11 @@ namespace ETWProcessMon
             Console.Write("[PrcID] New Process ");
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.Write("Detected, Process:PID");
-            PList.Add(obj.ProcessName + ":" + obj.ProcessID.ToString());
+            PList.Add(obj.ImageFileName + ":" + obj.ProcessID.ToString());
 
             Console.Write(" " + obj.ProcessName + ":" + obj.ProcessID.ToString());
             Console.WriteLine(" Started! " + DateTime.Now.ToString());
-
-            Process_Events_db.Add(new _ProcessInfo { PPID = obj.ParentID, MemAPIName = "ProcessStart", PID = obj.ProcessID.ToString(), PIDPath = getpathPID(obj.ProcessID), ProcessName = obj.ProcessName, PTime = obj.TimeStamp, TCPIPCon = "-", MemAllocInfo = "-" });          
+            Process_Events_db.Add(new _ProcessInfo { PPID = obj.ParentID, MemAPIName = "ProcessStart", PID = obj.ProcessID.ToString(), PIDPath = obj.ImageFileName, ProcessName = obj.ProcessName, PTime = obj.TimeStamp, TCPIPCon = "-", MemAllocInfo = "-" });                       
         }
         private static void Kernel_VirtualMemAlloc(Microsoft.Diagnostics.Tracing.Parsers.Kernel.VirtualAllocTraceData obj)
         {
@@ -242,7 +241,7 @@ namespace ETWProcessMon
 
             tempMemAllocInfo = "";
             tempPIDMemoAlloca = 0;
-           
+
             if (_arg == "MonAll")
             {
                 if (_arg2 == "x")
@@ -284,16 +283,16 @@ namespace ETWProcessMon
                     initdotmemoalloc = false;
                     foreach (var item in obj.PayloadNames)
                     {
-                       
-                            ////if (i == 2) Console.Write('\n' + "[etw]");
-                            ////if (i == 0)
-                            ////    Console.Write("[etw] [" + item + ": " + obj.PayloadValue(i).ToString() + "]");
 
-                            ////if (i > 0)
-                            ////    Console.Write(" [" + item + ": " + obj.PayloadValue(i).ToString() + "]");
+                        ////if (i == 2) Console.Write('\n' + "[etw]");
+                        ////if (i == 0)
+                        ////    Console.Write("[etw] [" + item + ": " + obj.PayloadValue(i).ToString() + "]");
+
+                        ////if (i > 0)
+                        ////    Console.Write(" [" + item + ": " + obj.PayloadValue(i).ToString() + "]");
 
                         tempMemAllocInfo += "[" + item + ": " + obj.PayloadValue(_v3).ToString() + "]";
-                       // tempETWdetails += "[" + item +"=>" + obj.PayloadValue(i).ToString() + "] ";
+                        // tempETWdetails += "[" + item +"=>" + obj.PayloadValue(i).ToString() + "] ";
                         tempETWdetails += ":" + obj.PayloadValue(_v3).ToString();
 
 
@@ -447,24 +446,23 @@ namespace ETWProcessMon
 
                     /// show details about Injection
                     _WriteResult_Inj_Info(_Search_MemInfoPlusDateTime(obj.ProcessID.ToString()));
-                    // _Search_all_4_VirtualMemAlloc(_Search_MemInfoPlusDateTime(obj.ProcessID.ToString()));
                     /// show details about Injection
                 }
             }
-            
-            Process_Events_db.Add(new _ProcessInfo { PPID = obj.ParentProcessID,  MemAPIName = "ThreadStart", PID = obj.ProcessID.ToString(), PIDPath = getpathPID(obj.ProcessID), ProcessName = obj.ProcessName, PTime = obj.TimeStamp, TCPIPCon = "-", MemAllocInfo = "-" });
+
+            Process_Events_db.Add(new _ProcessInfo { PPID = obj.ParentProcessID, MemAPIName = "ThreadStart", PID = obj.ProcessID.ToString(), PIDPath = getpathPID(obj.ProcessID), ProcessName = obj.ProcessName, PTime = obj.TimeStamp, TCPIPCon = "-", MemAllocInfo = "-" });
         }
 
-        public static List<_ProcessInfo> _Search_MemInfoPlusDateTime (string Pid)
+        public static List<_ProcessInfo> _Search_MemInfoPlusDateTime(string Pid)
         {
-            List<_ProcessInfo> Result = Process_Events_db.FindAll(Y => Y.PID.Contains(Pid) && Y.MemAPIName== "VirtualMemAlloc");
+            List<_ProcessInfo> Result = Process_Events_db.FindAll(Y => Y.PID.Contains(Pid) && Y.MemAPIName == "VirtualMemAlloc");
             return Result;
-        }  
+        }
         public static void _WriteResult_Inj_Info(List<_ProcessInfo> search)
-        {          
+        {
             foreach (_ProcessInfo item in search)
-            {    
-                Console.WriteLine("\t {2} - MemoryVirtualAlloc Detectted ==> PID:{0} PName:{1} ", item.PID, item.ProcessName, item.PTime);
+            {
+                Console.WriteLine("\t {2} - VirtualMemAlloc Detectted ==> PID:{0} PName:{1} ", item.PID, item.ProcessName, item.PTime);
                 if (temptimer >= 5)
                 {
                     temptimer = 0;
@@ -473,48 +471,49 @@ namespace ETWProcessMon
                 temptimer++;
             }
         }
-        public static void _Search_all_4_VirtualMemAlloc(List<_ProcessInfo> search2)
-        {
-            /// just do something, which i have no idea what exactly i found in list ;)
-            List<_ProcessInfo> Result = Process_Events_db.FindAll(Y => Y.MemAPIName == "VirtualMemAlloc");
-            foreach (_ProcessInfo item in search2)
-            {
-                foreach (_ProcessInfo item2 in Result)
-                {
-                    if (item.PTime == item2.PTime || (item.PTime.Minute - item2.PTime.Minute) >= -700000)
-                    {
-                        detected = false;
 
-                        if (item2.PID != lastname)
-                        {
-                            foreach (int found in detectedPIDs)
-                            {
-                                if(found == Convert.ToInt32(item2.PID))
-                                {
-                                    detected = true;
-                                    break;
-                                }
-                            }
-                            if (!detected)
-                            {
-                                Console.ForegroundColor = ConsoleColor.White;
-                                Console.WriteLine("\t\t {2} - MemoryVirtualAlloc Detectted ==> PID:{0} PName:{1} ", item2.PID, item2.ProcessName, item.PTime);
-                                Console.WriteLine("\t\t Path: {0} ", item2.PIDPath);
-                                Console.WriteLine();
-                            }
-                           Console.ForegroundColor = ConsoleColor.DarkGray;
+        //public static void _Search_all_4_VirtualMemAlloc(List<_ProcessInfo> search2)
+        //{
+        //    /// just do something, which i have no idea what exactly i found in list ;)
+        //    List<_ProcessInfo> Result = Process_Events_db.FindAll(Y => Y.MemAPIName == "VirtualMemAlloc");
+        //    foreach (_ProcessInfo item in search2)
+        //    {
+        //        foreach (_ProcessInfo item2 in Result)
+        //        {
+        //            if (item.PTime == item2.PTime || (item.PTime.Minute - item2.PTime.Minute) >= -700000)
+        //            {
+        //                detected = false;
 
-                            tempsearch_4_all++;
-                            lastname = item2.PID;
-                            detectedPIDs.Add(Convert.ToInt32(item2.PID));
+        //                if (item2.PID != lastname)
+        //                {
+        //                    foreach (int found in detectedPIDs)
+        //                    {
+        //                        if (found == Convert.ToInt32(item2.PID))
+        //                        {
+        //                            detected = true;
+        //                            break;
+        //                        }
+        //                    }
+        //                    if (!detected)
+        //                    {
+        //                        Console.ForegroundColor = ConsoleColor.White;
+        //                        Console.WriteLine("\t\t {2} - MemoryVirtualAlloc Detectted ==> PID:{0} PName:{1} ", item2.PID, item2.ProcessName, item.PTime);
+        //                        Console.WriteLine("\t\t Path: {0} ", item2.PIDPath);
+        //                        Console.WriteLine();
+        //                    }
+        //                    Console.ForegroundColor = ConsoleColor.DarkGray;
 
-                        }
-                        if (tempsearch_4_all >= 5) { tempsearch_4_all = 0;  break; }
-                    }
-                }
+        //                    tempsearch_4_all++;
+        //                    lastname = item2.PID;
+        //                    detectedPIDs.Add(Convert.ToInt32(item2.PID));
 
-            }
+        //                }
+        //                if (tempsearch_4_all >= 5) { tempsearch_4_all = 0; break; }
+        //            }
+        //        }
 
-        }
+        //    }
+
+        //}
     }
 }
