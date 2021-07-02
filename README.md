@@ -2,7 +2,7 @@
 ## "ETWNetMonv3/ETWNetMonv3Agent" is simple C# code for Monitoring TCP Network Connection via ETW & "ETWProcessMon" is for Monitoring Process/Thread/Memory/Imageload etc. 
 -----------------
 ### ETWNetMonv3.exe
-"ETWNetMonv3.exe" is Windows App for read/watching ETW Logs (which made by ETWNetMonv3Agent.exe), this code will publish with pdf files for chapter15 of my ebook soon.
+"ETWNetMonv3.exe" is Windows App for read/watching ETW Logs (which made by ETWNetMonv3Agent.exe), this code will publish with pdf files for chapter15 of my ebook soon. (i will talk about these codes in ch15 of ebook Bypassing AVs by C# Programming)
 
 ### ETWNetMonv3Agent.exe
 "ETWNetMonv3Agent.exe" is ETW Agent C# code and with this simple code you can have realtime TCPv4/v6 Connection Logs also with this tool you can Detect Meterpreter Payload via Signature (with switch SCAN , Detection for Remote Thread Injection) But this Signature worked very well only on Msfv4 (tested on Kali 2018, msf v4.17), Metasploit v6 (msf6) signature is changed so this old signature will not work on Msf6 ;)   
