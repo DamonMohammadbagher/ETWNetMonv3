@@ -109,7 +109,7 @@ Note: in this case you should use switch (html2) like picture in this time you w
    ![](https://github.com/DamonMohammadbagher/ETWNetMonv3/blob/main/Pic/4-1.png)
 
  -----------------------------------------------------------    
-  4. ETWProcessMon.cs (ETWProcessMon v1.1 tool is for RemoteThreadInjection Detection)
+  4. ETWProcessMon.cs (ETWProcessMon v1.2 tool is for RemoteThreadInjection Detection)
   
   Note: "this code tested for Detection against some new/old methods like C# code for Process Hollowing, DInvoke (syscall), Loading dll/functions from Memory [32BIT], Classic-RemoteThreadInjection, APC Queue Code Injection, Process-Ghosting, Process Hollowing & Process Doppelganging by [Minjector], ..."
 
