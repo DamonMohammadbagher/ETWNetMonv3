@@ -463,7 +463,7 @@ namespace ETWProcessMon
         {
             foreach (_ProcessInfo<String> item in search)
             {
-                Console.WriteLine("\t {2} - for this Process this PPID Detectted ==> PID:{0} PName:{1} ", item.PID, item.ProcessName, item.PTime);
+                Console.WriteLine("\t {2} - for this Process this PPID Detected ==> PID:{0} PName:{1} ", item.PID, item.ProcessName, item.PTime);
                 if (temptimer >= 5)
                 {
                     temptimer = 0;
