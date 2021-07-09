@@ -39,7 +39,19 @@ Video [3], [Video-3 of Chapter15-Part2]: (video is about C# + ETW vs Process Hol
     link1 => https://www.youtube.com/watch?v=d1a8WqOvE84
     link2 => https://share.vidyard.com/watch/4kB2Xy1bLfhRxaTD6pwaLD
 
+### ETWProcessMon2.exe
+Note: in "ETWProcessMon2.cs" (Version 2) NewProcess events + Remote-Thread-Injection Detecetion events + TCPIP send events all will save in Windows Event Log which with EventViewer you can watch them also VirtualMemAlloc events + Remote-thread-injection Detection Events will save in text "ETWProcessMonlog.txt" log file too (at the same time). so in this version2 we have two type of Events log files => 1."windows event logs [ETWPM2]" , 2."ETWProcessMonlog.txt"
 
+ETW Events in event log [ETWPM2]:
+
+    [Information] Event ID 1  => NewProcess event 
+    [Warning]     Event ID 2  => Remote-Thread-Injection Detection event 
+    [Information] Event ID 3  => TCPIP Send event
+
+for more information about "ETWProcessMon2.exe" : https://github.com/DamonMohammadbagher/ETWProcessMon2 
+
+ -----------------------------------------------------------    
+ 
  1. ETWNetMonv3.exe Windows App (i will publish Code for this tool + pdf Chapter15 soon) 
  
  Note: in win10 you should run this tool with Admin ("Run as Admin")
