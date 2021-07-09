@@ -48,7 +48,7 @@ ETW Events in event log [ETWPM2]:
     [Warning]     Event ID 2  => Remote-Thread-Injection Detection event 
     [Information] Event ID 3  => TCPIP Send event
 
-for more information about "ETWProcessMon2.exe" : https://github.com/DamonMohammadbagher/ETWProcessMon2 
+for more information about "ETWProcessMon2.exe" (step by step with images & details) => https://github.com/DamonMohammadbagher/ETWProcessMon2 
 
  -----------------------------------------------------------    
  
