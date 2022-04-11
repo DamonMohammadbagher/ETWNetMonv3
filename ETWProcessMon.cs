@@ -145,12 +145,12 @@ namespace ETWProcessMon
                 Priority = System.Threading.ThreadPriority.AboveNormal
             };
             Bingo.Start();
-            GC.GetTotalMemory(true);
+            //GC.GetTotalMemory(true);
         }
 
         private static void Kernel_ImageLoad(Microsoft.Diagnostics.Tracing.Parsers.Kernel.ImageLoadTraceData obj)
         {
-            GC.GetTotalMemory(true);
+           // GC.GetTotalMemory(true);
 
 
             Console.WriteLine();
@@ -239,7 +239,7 @@ namespace ETWProcessMon
         private static void Kernel_VirtualMemAlloc(Microsoft.Diagnostics.Tracing.Parsers.Kernel.VirtualAllocTraceData obj)
         {
             //GC.GetTotalMemory(true);
-            GC.Collect();
+            //GC.Collect();
             tempMemAllocInfo = "";
             tempPIDMemoAlloca = 0;
 
@@ -319,7 +319,7 @@ namespace ETWProcessMon
         private static void Kernel_MemoryVirtualAllocDCStart(Microsoft.Diagnostics.Tracing.EmptyTraceData obj)
         {
             // GC.GetTotalMemory(true);
-            GC.Collect();
+            //GC.Collect();
             tempMemAllocInfo = "";
             tempPIDMemoAlloca = 0;
             if (_arg == "MonAll")
@@ -390,7 +390,7 @@ namespace ETWProcessMon
         private static void Kernel_ThreadStart(Microsoft.Diagnostics.Tracing.Parsers.Kernel.ThreadTraceData obj)
         {
             // GC.GetTotalMemory(true);
-            GC.Collect();
+            //GC.Collect();
             if (_arg == "MonAll")
             {
                 string prc = "Process Exited";
